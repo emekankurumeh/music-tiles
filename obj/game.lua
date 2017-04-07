@@ -1,31 +1,28 @@
-local Game  = require "lib.classic"
-local _      = require "lib.lume"
-local shash  = require "lib.shash"
-
-local Rect   = require "obj.rect"
-local Color  = require "obj.color"
-local Oscillator = require "obj.oscillator"
+local Game = require "lib.classic"
+local _  = require "lib.lume"
+local shash = require "lib.shash"
+local Rect = require "obj.rect"
+local Color = require "obj.color"
 
 function Game:new()
   error("use Game.init() instead")
 end
 
 function Game.init(width, height, color)
-  Game.bgcolor = {0, 0, 0}
+  Game.bgcolor = {.15, .15, .15}
   -- Game.bgcolor = Color[color] and Color[color] or Color["dark-grey"]
-
   Game.width = width or G.width
   Game.height = height or G.height
-
   Game.framebuffer = sol.Buffer.fromBlank(G.width, G.height)
   Game.postbuffer = Game.framebuffer:clone()
-
+  local Camera = require "obj.camera"
+  Game.camera = Camera(0, 0)
+  local Save = require "obj.save"
+  Game.save = Save("save.dat", {})
   Game.group = shash.new(2)
   Game.cursor = Rect(sol.mouse.getX(),sol.mouse.getY(), 16, 16)
   Game.add(Game.cursor, Game.cursor.x, Game.cursor.y, Game.cursor.width, Game.cursor.height)
-
   Game.tile = {}
-
   for x = 0, 3 do
     Game.tile[x + 1] = {}
     for y = 0, 3 do
@@ -49,6 +46,7 @@ end
 
 function Game.update(dt)
   require("lib.stalker").update()
+  Game.camera:update()
   Game.cursor:set(sol.mouse.getPosition())
   Game.group:each(Game.cursor, function(obj)
     if sol.mouse.isDown("left") then

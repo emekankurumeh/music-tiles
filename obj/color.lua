@@ -1,6 +1,6 @@
 local _ = require "lib.lume"
 
--- return {
+-- local Color = {
 --   ["black"]       = { _.color("#000000") },
 --   ["dark-blue"]   = { _.color("#1d2b53") },
 --   ["dark-purple"] = { _.color("#7e2553") },
@@ -18,6 +18,8 @@ local _ = require "lib.lume"
 --   ["pink"]        = { _.color("#ff77a8") },
 --   ["peach"]       = { _.color("#ffccaa") },
 -- }
+
+-- return Color
 
 return {
   {
